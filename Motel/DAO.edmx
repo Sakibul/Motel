@@ -1,0 +1,365 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="MotelDBModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="int" Nullable="false" />
+          <Property Name="GuestsInRoomId" Type="int" Nullable="false" />
+          <Property Name="BillDate" Type="date" Nullable="false" />
+          <Property Name="NoOfDays" Type="tinyint" Nullable="false" />
+          <Property Name="RatePerDay" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="Discount" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="TotalBeforeTax" Type="decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="Tax" Type="decimal" Precision="5" Scale="2" />
+          <Property Name="TotalAfterTax" Type="decimal" Precision="7" Scale="2" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="GuestId" />
+          </Key>
+          <Property Name="GuestId" Type="int" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="Phone" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="50" />
+          <Property Name="IdentificationNo" Type="int" Nullable="false" />
+          <Property Name="IdentificationType" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="Rating" Type="tinyint" />
+        </EntityType>
+        <EntityType Name="GuestsInRoom">
+          <Key>
+            <PropertyRef Name="GuestsInRoomId" />
+          </Key>
+          <Property Name="GuestsInRoomId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="RoomId" Type="tinyint" Nullable="false" />
+          <Property Name="GuestId" Type="int" Nullable="false" />
+          <Property Name="isMainGuest" Type="bit" Nullable="false" />
+          <Property Name="DateIn" Type="date" Nullable="false" />
+          <Property Name="DateOut" Type="date" />
+        </EntityType>
+        <EntityType Name="Parking">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="tinyint" Nullable="false" />
+          <Property Name="GuestId" Type="int" Nullable="false" />
+          <Property Name="VehicleRegistration" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Name="RoomId" Type="tinyint" Nullable="false" />
+          <Property Name="Type" Type="nvarchar" MaxLength="20" Nullable="false" />
+          <Property Name="NoOfBeds" Type="tinyint" Nullable="false" />
+          <Property Name="Availability" Type="bit" Nullable="false" />
+          <Property Name="RatePerDay" Type="decimal" Precision="5" Scale="2" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Bill_GuestsInRoomId">
+          <End Role="GuestsInRoom" Type="Self.GuestsInRoom" Multiplicity="1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GuestsInRoom">
+              <PropertyRef Name="GuestsInRoomId" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="GuestsInRoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GuestsInRoom_GuestId">
+          <End Role="Guest" Type="Self.Guest" Multiplicity="1" />
+          <End Role="GuestsInRoom" Type="Self.GuestsInRoom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guest">
+              <PropertyRef Name="GuestId" />
+            </Principal>
+            <Dependent Role="GuestsInRoom">
+              <PropertyRef Name="GuestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GuestsInRoom_RoomId">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="GuestsInRoom" Type="Self.GuestsInRoom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="RoomId" />
+            </Principal>
+            <Dependent Role="GuestsInRoom">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Parking_GuestId">
+          <End Role="Guest" Type="Self.Guest" Multiplicity="1" />
+          <End Role="Parking" Type="Self.Parking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guest">
+              <PropertyRef Name="GuestId" />
+            </Principal>
+            <Dependent Role="Parking">
+              <PropertyRef Name="GuestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MotelDBModelStoreContainer">
+          <EntitySet Name="Bill" EntityType="Self.Bill" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Guest" EntityType="Self.Guest" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="GuestsInRoom" EntityType="Self.GuestsInRoom" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Parking" EntityType="Self.Parking" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Room" EntityType="Self.Room" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Bill_GuestsInRoomId" Association="Self.FK_Bill_GuestsInRoomId">
+            <End Role="GuestsInRoom" EntitySet="GuestsInRoom" />
+            <End Role="Bill" EntitySet="Bill" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GuestsInRoom_GuestId" Association="Self.FK_GuestsInRoom_GuestId">
+            <End Role="Guest" EntitySet="Guest" />
+            <End Role="GuestsInRoom" EntitySet="GuestsInRoom" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GuestsInRoom_RoomId" Association="Self.FK_GuestsInRoom_RoomId">
+            <End Role="Room" EntitySet="Room" />
+            <End Role="GuestsInRoom" EntitySet="GuestsInRoom" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Parking_GuestId" Association="Self.FK_Parking_GuestId">
+            <End Role="Guest" EntitySet="Guest" />
+            <End Role="Parking" EntitySet="Parking" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="MotelDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Bill">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Int32" Nullable="false" />
+          <Property Name="GuestsInRoomId" Type="Int32" Nullable="false" />
+          <Property Name="BillDate" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="NoOfDays" Type="Byte" Nullable="false" />
+          <Property Name="RatePerDay" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <Property Name="Discount" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="TotalBeforeTax" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <Property Name="Tax" Type="Decimal" Precision="5" Scale="2" />
+          <Property Name="TotalAfterTax" Type="Decimal" Precision="7" Scale="2" Nullable="false" />
+          <NavigationProperty Name="GuestsInRoom" Relationship="Self.FK_Bill_GuestsInRoomId" FromRole="Bill" ToRole="GuestsInRoom" />
+        </EntityType>
+        <EntityType Name="Guest">
+          <Key>
+            <PropertyRef Name="GuestId" />
+          </Key>
+          <Property Name="GuestId" Type="Int32" Nullable="false" />
+          <Property Name="FirstName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="LastName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Phone" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Email" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="IdentificationNo" Type="Int32" Nullable="false" />
+          <Property Name="IdentificationType" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Rating" Type="Byte" />
+          <NavigationProperty Name="GuestsInRooms" Relationship="Self.FK_GuestsInRoom_GuestId" FromRole="Guest" ToRole="GuestsInRoom" />
+          <NavigationProperty Name="Parkings" Relationship="Self.FK_Parking_GuestId" FromRole="Guest" ToRole="Parking" />
+        </EntityType>
+        <EntityType Name="GuestsInRoom">
+          <Key>
+            <PropertyRef Name="GuestsInRoomId" />
+          </Key>
+          <Property Name="GuestsInRoomId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="RoomId" Type="Byte" Nullable="false" />
+          <Property Name="GuestId" Type="Int32" Nullable="false" />
+          <Property Name="isMainGuest" Type="Boolean" Nullable="false" />
+          <Property Name="DateIn" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="DateOut" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Bills" Relationship="Self.FK_Bill_GuestsInRoomId" FromRole="GuestsInRoom" ToRole="Bill" />
+          <NavigationProperty Name="Guest" Relationship="Self.FK_GuestsInRoom_GuestId" FromRole="GuestsInRoom" ToRole="Guest" />
+          <NavigationProperty Name="Room" Relationship="Self.FK_GuestsInRoom_RoomId" FromRole="GuestsInRoom" ToRole="Room" />
+        </EntityType>
+        <EntityType Name="Parking">
+          <Key>
+            <PropertyRef Name="Id" />
+          </Key>
+          <Property Name="Id" Type="Byte" Nullable="false" />
+          <Property Name="GuestId" Type="Int32" Nullable="false" />
+          <Property Name="VehicleRegistration" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Guest" Relationship="Self.FK_Parking_GuestId" FromRole="Parking" ToRole="Guest" />
+        </EntityType>
+        <EntityType Name="Room">
+          <Key>
+            <PropertyRef Name="RoomId" />
+          </Key>
+          <Property Name="RoomId" Type="Byte" Nullable="false" />
+          <Property Name="Type" Type="String" MaxLength="20" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="NoOfBeds" Type="Byte" Nullable="false" />
+          <Property Name="Availability" Type="Boolean" Nullable="false" />
+          <Property Name="RatePerDay" Type="Decimal" Precision="5" Scale="2" Nullable="false" />
+          <NavigationProperty Name="GuestsInRooms" Relationship="Self.FK_GuestsInRoom_RoomId" FromRole="Room" ToRole="GuestsInRoom" />
+        </EntityType>
+        <Association Name="FK_Bill_GuestsInRoomId">
+          <End Role="GuestsInRoom" Type="Self.GuestsInRoom" Multiplicity="1" />
+          <End Role="Bill" Type="Self.Bill" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="GuestsInRoom">
+              <PropertyRef Name="GuestsInRoomId" />
+            </Principal>
+            <Dependent Role="Bill">
+              <PropertyRef Name="GuestsInRoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GuestsInRoom_GuestId">
+          <End Role="Guest" Type="Self.Guest" Multiplicity="1" />
+          <End Role="GuestsInRoom" Type="Self.GuestsInRoom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guest">
+              <PropertyRef Name="GuestId" />
+            </Principal>
+            <Dependent Role="GuestsInRoom">
+              <PropertyRef Name="GuestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Parking_GuestId">
+          <End Role="Guest" Type="Self.Guest" Multiplicity="1" />
+          <End Role="Parking" Type="Self.Parking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Guest">
+              <PropertyRef Name="GuestId" />
+            </Principal>
+            <Dependent Role="Parking">
+              <PropertyRef Name="GuestId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_GuestsInRoom_RoomId">
+          <End Role="Room" Type="Self.Room" Multiplicity="1" />
+          <End Role="GuestsInRoom" Type="Self.GuestsInRoom" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Room">
+              <PropertyRef Name="RoomId" />
+            </Principal>
+            <Dependent Role="GuestsInRoom">
+              <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="MotelDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Bills" EntityType="Self.Bill" />
+          <EntitySet Name="Guests" EntityType="Self.Guest" />
+          <EntitySet Name="GuestsInRooms" EntityType="Self.GuestsInRoom" />
+          <EntitySet Name="Parkings" EntityType="Self.Parking" />
+          <EntitySet Name="Rooms" EntityType="Self.Room" />
+          <AssociationSet Name="FK_Bill_GuestsInRoomId" Association="Self.FK_Bill_GuestsInRoomId">
+            <End Role="GuestsInRoom" EntitySet="GuestsInRooms" />
+            <End Role="Bill" EntitySet="Bills" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GuestsInRoom_GuestId" Association="Self.FK_GuestsInRoom_GuestId">
+            <End Role="Guest" EntitySet="Guests" />
+            <End Role="GuestsInRoom" EntitySet="GuestsInRooms" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Parking_GuestId" Association="Self.FK_Parking_GuestId">
+            <End Role="Guest" EntitySet="Guests" />
+            <End Role="Parking" EntitySet="Parkings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_GuestsInRoom_RoomId" Association="Self.FK_GuestsInRoom_RoomId">
+            <End Role="Room" EntitySet="Rooms" />
+            <End Role="GuestsInRoom" EntitySet="GuestsInRooms" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="MotelDBModelStoreContainer" CdmEntityContainer="MotelDBEntities">
+          <EntitySetMapping Name="Bills">
+            <EntityTypeMapping TypeName="MotelDBModel.Bill">
+              <MappingFragment StoreEntitySet="Bill">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GuestsInRoomId" ColumnName="GuestsInRoomId" />
+                <ScalarProperty Name="BillDate" ColumnName="BillDate" />
+                <ScalarProperty Name="NoOfDays" ColumnName="NoOfDays" />
+                <ScalarProperty Name="RatePerDay" ColumnName="RatePerDay" />
+                <ScalarProperty Name="Discount" ColumnName="Discount" />
+                <ScalarProperty Name="TotalBeforeTax" ColumnName="TotalBeforeTax" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="TotalAfterTax" ColumnName="TotalAfterTax" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Guests">
+            <EntityTypeMapping TypeName="MotelDBModel.Guest">
+              <MappingFragment StoreEntitySet="Guest">
+                <ScalarProperty Name="GuestId" ColumnName="GuestId" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="Phone" ColumnName="Phone" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="IdentificationNo" ColumnName="IdentificationNo" />
+                <ScalarProperty Name="IdentificationType" ColumnName="IdentificationType" />
+                <ScalarProperty Name="Rating" ColumnName="Rating" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="GuestsInRooms">
+            <EntityTypeMapping TypeName="MotelDBModel.GuestsInRoom">
+              <MappingFragment StoreEntitySet="GuestsInRoom">
+                <ScalarProperty Name="GuestsInRoomId" ColumnName="GuestsInRoomId" />
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="GuestId" ColumnName="GuestId" />
+                <ScalarProperty Name="isMainGuest" ColumnName="isMainGuest" />
+                <ScalarProperty Name="DateIn" ColumnName="DateIn" />
+                <ScalarProperty Name="DateOut" ColumnName="DateOut" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Parkings">
+            <EntityTypeMapping TypeName="MotelDBModel.Parking">
+              <MappingFragment StoreEntitySet="Parking">
+                <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="GuestId" ColumnName="GuestId" />
+                <ScalarProperty Name="VehicleRegistration" ColumnName="VehicleRegistration" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Rooms">
+            <EntityTypeMapping TypeName="MotelDBModel.Room">
+              <MappingFragment StoreEntitySet="Room">
+                <ScalarProperty Name="RoomId" ColumnName="RoomId" />
+                <ScalarProperty Name="Type" ColumnName="Type" />
+                <ScalarProperty Name="NoOfBeds" ColumnName="NoOfBeds" />
+                <ScalarProperty Name="Availability" ColumnName="Availability" />
+                <ScalarProperty Name="RatePerDay" ColumnName="RatePerDay" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

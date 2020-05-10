@@ -5,8 +5,83 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Motel"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="Motel" Height="450" Width="800"
+        Loaded="Window_Loaded">
     <Grid>
-        
+        <TabControl>
+            <TabItem x:Name="tabRoom" Header="Room">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="RoomId" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtRoomRoomId" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="Type" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtRoomType" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="2" Grid.Column="0" Content="NoOfBeds" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtRoomNoOfBeds" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="3" Grid.Column="0" Content="Availability" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <CheckBox Grid.Row="3" Grid.Column="1" x:Name="chkRoomAvailability" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="4" Grid.Column="0" Content="RatePerDay" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtRoomRatePerDay" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    
+                    <Button Grid.Row="5" Grid.Column="0" Margin="100,0"
+                            x:Name="btnRoomLoadGrid" Content="Load Grid" Click="btnRoomLoadGrid_Click"/>
+
+                    <Button Grid.Row="5" Grid.Column="1" Margin="100,0"
+                            x:Name="btnRoomEdit" Content="Update Room" Click="btnRoomEdit_Click"/>
+
+
+                    <DataGrid Grid.Row="6" Grid.Column="0" Grid.RowSpan="10" Grid.ColumnSpan="2"
+                                x:Name="dataGridRoom" ItemsSource="{Binding}" AutoGenerateColumns="False"
+                                AlternatingRowBackground="OrangeRed" IsReadOnly="True"
+                              MouseDoubleClick="dataGridRoom_MouseDoubleClick">
+
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="RoomId" Binding="{Binding RoomId}" Visibility="Visible" />
+                            <DataGridTextColumn Header="Type" Binding="{Binding Type}" />
+                            <DataGridTextColumn Header="NoOfBeds" Binding="{Binding NoOfBeds}" />
+                            <DataGridCheckBoxColumn Header="Availability" Binding="{Binding Availability}" />
+                            <DataGridTextColumn Header="RatePerDay" Binding="{Binding RatePerDay}" />
+                        </DataGrid.Columns>
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+            
+            <TabItem x:Name="tabGuest" Header="Guest"/>
+            
+            <TabItem x:Name="tabGuestsInRoom" Header="Guests in Room"/>
+            
+            <TabItem x:Name="tabParking" Header="Parking"/>
+            
+            <TabItem x:Name="tabBill" Header="Bill"/>
+        </TabControl>
     </Grid>
 </Window>
