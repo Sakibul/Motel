@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Motel"
         mc:Ignorable="d"
-        Title="Motel" Height="450" Width="800"
+        Title="Motel" Height="600" Width="800"
         Loaded="Window_Loaded">
     <Grid>
-        <TabControl>
+        <TabControl SelectionChanged="TabControl_SelectionChanged">
             <TabItem x:Name="tabRoom" Header="Room">
                 <Grid>
                     <Grid.ColumnDefinitions>
@@ -36,19 +36,19 @@
                         <RowDefinition/>
                     </Grid.RowDefinitions>
 
-                    <Label Grid.Row="0" Grid.Column="0" Content="RoomId" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <Label Grid.Row="0" Grid.Column="0" Content="Room Id" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtRoomRoomId" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                     <Label Grid.Row="1" Grid.Column="0" Content="Type" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtRoomType" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                    <Label Grid.Row="2" Grid.Column="0" Content="NoOfBeds" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <Label Grid.Row="2" Grid.Column="0" Content="No Of Beds" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtRoomNoOfBeds" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                     <Label Grid.Row="3" Grid.Column="0" Content="Availability" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <CheckBox Grid.Row="3" Grid.Column="1" x:Name="chkRoomAvailability" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
-                    <Label Grid.Row="4" Grid.Column="0" Content="RatePerDay" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <Label Grid.Row="4" Grid.Column="0" Content="Rate Per Day" VerticalAlignment="Center" HorizontalAlignment="Right"/>
                     <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtRoomRatePerDay" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
 
                     
@@ -74,9 +74,76 @@
                     </DataGrid>
                 </Grid>
             </TabItem>
-            
-            <TabItem x:Name="tabGuest" Header="Guest"/>
-            
+
+            <TabItem x:Name="tabGuest" Header="Guest">
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition />
+                        <ColumnDefinition />
+                    </Grid.ColumnDefinitions>
+
+                    <Grid.RowDefinitions>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                        <RowDefinition/>
+                    </Grid.RowDefinitions>
+
+                    <Label Grid.Row="0" Grid.Column="0" Content="GuestId" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="0" Grid.Column="1" x:Name="txtGuestGuestId" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="1" Grid.Column="0" Content="First Name" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="1" Grid.Column="1" x:Name="txtGuestFirstName" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="2" Grid.Column="0" Content="Last Name" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="2" Grid.Column="1" x:Name="txtGuestLastName" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="3" Grid.Column="0" Content="Phone" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="3" Grid.Column="1" x:Name="txtGuestPhone" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="4" Grid.Column="0" Content="Email" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="4" Grid.Column="1" x:Name="txtGuestEmail" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="5" Grid.Column="0" Content="Identification No" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="5" Grid.Column="1" x:Name="txtGuestIdentificationNo" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="6" Grid.Column="0" Content="Identification Type" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="6" Grid.Column="1" x:Name="txtGuestIdentificationType" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+                    <Label Grid.Row="7" Grid.Column="0" Content="Rating" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                    <TextBox Grid.Row="7" Grid.Column="1" x:Name="txtGuestRating" Width="350" VerticalAlignment="Center" HorizontalAlignment="Left" />
+
+
+                    <Button Grid.Row="8" Grid.Column="0" Margin="100,0"
+                            x:Name="btnGuestLoadGrid" Content="Load Grid" Click="btnGuestLoadGrid_Click"/>
+
+                    <Button Grid.Row="8" Grid.Column="1" Margin="100,0"
+                            x:Name="btnGuestAdd" Content="Add Guest" Click="btnGuestAdd_Click"/>
+
+
+                    <DataGrid Grid.Row="9" Grid.Column="0" Grid.RowSpan="10" Grid.ColumnSpan="2"
+                                x:Name="dataGridGuest" ItemsSource="{Binding Guests}" AutoGenerateColumns="True"
+                                AlternatingRowBackground="LightGreen" IsReadOnly="False">
+                    </DataGrid>
+                </Grid>
+            </TabItem>
+
             <TabItem x:Name="tabGuestsInRoom" Header="Guests in Room"/>
             
             <TabItem x:Name="tabParking" Header="Parking"/>

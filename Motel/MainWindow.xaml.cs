@@ -25,20 +25,16 @@ namespace Motel
             InitializeComponent();
         }
 
-        private void btnRoomEdit_Click(object sender, RoutedEventArgs e)
+        private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             service.RoomService roomService = new service.RoomService();
-            
-            Room room = new Room();
-            room.RoomId = Byte.Parse(txtRoomRoomId.Text);
-            room.Type = txtRoomType.Text;
-            room.NoOfBeds = Byte.Parse(txtRoomNoOfBeds.Text);
-            room.Availability = (chkRoomAvailability.IsChecked == true);
-            room.RatePerDay = Decimal.Parse(txtRoomRatePerDay.Text);
-
-            roomService.EditRoom(room);
-
-            MessageBox.Show("Room has been updated. Please reload Grid.");
+            this.DataContext = roomService.GetAllRooms();
+        }
+        // *************************************************************
+        private void btnRoomLoadGrid_Click(object sender, RoutedEventArgs e)
+        {
+            service.RoomService roomService = new service.RoomService();
+            this.DataContext = roomService.GetAllRooms();
         }
 
         private void btnRoomAdd_Click(object sender, RoutedEventArgs e)
@@ -56,10 +52,20 @@ namespace Motel
             roomService.AddRoom(room);
         }
 
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        private void btnRoomEdit_Click(object sender, RoutedEventArgs e)
         {
             service.RoomService roomService = new service.RoomService();
-            this.DataContext = roomService.GetAllRooms();
+
+            Room room = new Room();
+            room.RoomId = Byte.Parse(txtRoomRoomId.Text);
+            room.Type = txtRoomType.Text;
+            room.NoOfBeds = Byte.Parse(txtRoomNoOfBeds.Text);
+            room.Availability = (chkRoomAvailability.IsChecked == true);
+            room.RatePerDay = Decimal.Parse(txtRoomRatePerDay.Text);
+
+            roomService.EditRoom(room);
+
+            MessageBox.Show("Room has been updated. Please reload Grid.");
         }
 
         private void dataGridRoom_MouseDoubleClick(object sender, MouseButtonEventArgs e)
@@ -73,10 +79,40 @@ namespace Motel
             txtRoomRatePerDay.Text = (dataGridRoom.SelectedCells[4].Column.GetCellContent(item) as TextBlock).Text;
         }
 
-        private void btnRoomLoadGrid_Click(object sender, RoutedEventArgs e)
+        // *************************************************************
+        private void btnGuestLoadGrid_Click(object sender, RoutedEventArgs e)
         {
-            service.RoomService roomService = new service.RoomService();
-            this.DataContext = roomService.GetAllRooms();
+            service.GuestService guestService = new service.GuestService();
+            //this.DataContext = guestService.GetAllRooms();
+            dataGridGuest.ItemsSource = guestService.GetAllGuests();
+        }
+
+        private void btnGuestAdd_Click(object sender, RoutedEventArgs e)
+        {
+            service.GuestService guestService = new service.GuestService();
+
+            Guest guest = new Guest()
+            {
+                GuestId = Int32.Parse(txtGuestGuestId.Text),
+                FirstName = txtGuestFirstName.Text,
+                LastName = txtGuestLastName.Text,
+                Phone = txtGuestPhone.Text,
+                Email = txtGuestEmail.Text,
+                IdentificationNo = Int32.Parse(txtGuestIdentificationNo.Text),
+                IdentificationType = txtGuestIdentificationType.Text,
+                Rating = Byte.Parse(txtGuestRating.Text)
+            };
+
+            guestService.AddGuest(guest);
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            int tabItem = ((sender as TabControl)).SelectedIndex;
+            if (e.Source is TabControl) // This is a solution of those problem.
+            {
+                this.Title = tabItem.ToString();
+            }
         }
     }
 }
